@@ -4,14 +4,18 @@ module.exports = {
 
     async index(request, response) {
         const { page = 1 } = request.query;
+        console.log(request.query);
+
 
         const [count] = await connection('incidents').count();
+        console.log('CASOS:', count);
 
 
         const incidents = await connection('incidents')
             .join('ongs', 'ongs.id', '=', 'incidents.ong_id')
-            .limit(5)
-            .offset((page - 1) * 5)
+            // .limit(5)
+            // .offset((page - 1) * 5)
+            .orderBy('id', "desc")
             .select([
                 'incidents.*',
                 'ongs.name',
@@ -31,6 +35,10 @@ module.exports = {
     async create(request, response) {
         const { title, description, value } = request.body;
         const ong_id = request.headers.authorization;
+
+        console.log('REQUEST', request.body);
+        console.log('ONG ID', request.headers.authorization);
+
 
         const [id] = await connection('incidents').insert({
             title,
