@@ -4,7 +4,7 @@ const connection = require('../../database/connection');
 
 describe('ONG', () => {
     beforeEach(async () => {
-        await connection.migrate.rollback(); //zera o banco de dados de testes gerados p não lotar o BD
+        await connection.migrate.rollback(); //zera o banco de dados de testes gerados p não lotar o BD 
         await connection.migrate.latest();
     });
 

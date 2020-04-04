@@ -10,6 +10,6 @@ app.use(express.json());
 app.use(routes);
 app.use(errors());
 
+
 module.exports = app;
-// app.listen(3333); comentado p mudar p module exports p test //Node porta = 3333; react = 3000
 
