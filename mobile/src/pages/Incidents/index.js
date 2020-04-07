@@ -37,11 +37,10 @@ export default function Incidents() {
             params: { page }
         });
 
-        setIncidents(response.data);
-
+        setIncidents([...incidents, ...response.data]);
         setTotal(response.headers['x-total-count']);
         setPage(page + 1);
-        setLoading(true);
+        setLoading(false);
 
     }
 
@@ -55,9 +54,7 @@ export default function Incidents() {
                 <Image source={logoImg} />
                 <Text style={styles.headerText}>
                     Total de <Text style={styles.headerTextBold}>{total} casos</Text>
-
                 </Text>
-
             </View>
 
             <Text style={styles.title}>Bem-vindo</Text>
@@ -66,7 +63,7 @@ export default function Incidents() {
             <FlatList
                 data={incidents}
                 style={styles.incidentList}
-                keyExtractor={incident => String(incident.id)}
+                keyExtractor={incident => incident.id}
                 showsVerticalScrollIndicator={false}
                 onEndReached={loadIncidents}
                 onEndReachedThreshold={0.2}
@@ -77,6 +74,9 @@ export default function Incidents() {
 
                         <Text style={styles.incidentProperty}>CASO:</Text>
                         <Text style={styles.incidentValue}>{incident.title}</Text>
+
+                        <Text style={styles.incidentProperty}>DESCRIÇÃO:</Text>
+                        <Text style={styles.incidentValue}>{incident.description}</Text>
 
                         <Text style={styles.incidentProperty}>VALOR:</Text>
                         <Text style={styles.incidentValue}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(incident.value)}</Text>

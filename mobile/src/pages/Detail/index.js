@@ -1,12 +1,12 @@
 import React from 'react';
 import { Feather } from '@expo/vector-icons';
-import { View, Text, Image, TouchableOpacity, Linking } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { View, Text, Image, TouchableOpacity, Linking } from 'react-native';
 import * as MailComposer from 'expo-mail-composer';
 
+import logoImg from '../../assets/logo.png';
 
 import styles from './styles';
-import logoImg from '../../assets/logo.png';
 
 
 
@@ -16,10 +16,13 @@ export default function Detail() {
     const route = useRoute();
 
     const incident = route.params.incident;
+    const message = `Olá ${incident.name}, estou entrando em contato pois gostaria de ajudar no caso "${incident.title}" com o valor de ${incident.value} ${Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(incident.value)}`;
+
+
+
 
     function navigateBack() {
         navigation.goBack();
-        const message = `Olá ${incident.name}, estou entrando em contato pois gostaria de ajudar no caso "${incident.title}" com o valor de ${incident.value} ${Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(incident.value)}`;
     }
 
     function sendMail() {
@@ -31,8 +34,8 @@ export default function Detail() {
 
     }
     function sendWhatsapp() {
-        Linking.openURL(`whatsapp://send?phone=${incident.whatsapp}&text=${message}`);
-
+        Linking.openURL(`whatsapp://send?phone=+5584988921303&text=${message}`);
+        // Linking.openURL(`whatsapp://send?phone=${incident.whatsapp}&text=${message}`);
     }
 
 
@@ -40,18 +43,23 @@ export default function Detail() {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image source={logoImg} />
-                <TouchableOpacity onPress={navigateBack} >
-                    <Feather name="arrow-right" size={28} color="#E82041" />
 
+                <TouchableOpacity onPress={navigateBack} >
+                    <Feather name="arrow-left" size={28} color="#E82041" />
                 </TouchableOpacity>
             </View>
 
             <View>
-                <Text style={styles.incidentProperty, { marginTop: 0 }}>ONG:</Text>
+                <Text style={styles.incidentProperty}>ONG:</Text>
+                {/* <Text style={styles.incidentProperty, { marginTop: 0 }}>ONG:</Text> */}
+
                 <Text style={styles.incidentValue}>{incident.name} de {incident.city}/{incident.uf} </Text>
 
                 <Text style={styles.incidentProperty}>CASO:</Text>
                 <Text style={styles.incidentValue}>{incident.title}</Text>
+
+                <Text style={styles.incidentProperty}>DESCRIÇÃO:</Text>
+                <Text style={styles.incidentValue}>{incident.description}</Text>
 
                 <Text style={styles.incidentProperty}>VALOR:</Text>
                 <Text style={styles.incidentValue}>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(incident.value)}</Text>
